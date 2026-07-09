@@ -1,12 +1,12 @@
 (() => {
   'use strict';
 
-  const STORAGE_KEY = 'neurotap.v3';
+  const STORAGE_KEY = 'neurotap.v7';
   const $ = (sel, root = document) => root.querySelector(sel);
   const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
 
   const themes = [
-    { id: 'dark', name: 'Void Console', swatch: ['#070910', '#8b5cff'] },
+    { id: 'dark', name: 'Midnight Glass', swatch: ['#050814', '#24c8ff'] },
     { id: 'light', name: 'Frost Lab', swatch: ['#eef2ff', '#5b5cff'] },
     { id: 'neon', name: 'Cyber Bloom', swatch: ['#030617', '#00eaff'] },
     { id: 'ember', name: 'Lava Core', swatch: ['#120706', '#ff9b22'] },
@@ -18,7 +18,7 @@
   const levels = {
     easy:   { label: 'Easy',   targets: 10, grid: 4, aim: 78, sequence: 3, matrix: 12, stroop: 8, raceDelay: [850, 1700] },
     normal: { label: 'Normal', targets: 15, grid: 5, aim: 64, sequence: 4, matrix: 16, stroop: 12, raceDelay: [1150, 2300] },
-    hard:   { label: 'Hard',   targets: 25, grid: 6, aim: 48, sequence: 5, matrix: 25, stroop: 18, raceDelay: [1500, 3300] }
+    hard:   { label: 'Hard',   targets: 25, grid: 5, aim: 48, sequence: 5, matrix: 25, stroop: 18, raceDelay: [1500, 3300] }
   };
 
   const modeInfo = {
@@ -245,8 +245,9 @@
 
   function setTheme(id) {
     state.theme = themes.some(t => t.id === id) ? id : 'dark';
-    document.documentElement.dataset.theme = state.theme === 'dark' ? '' : state.theme;
-    document.querySelector('meta[name="theme-color"]').setAttribute('content', state.theme === 'light' || state.theme === 'sakura' ? '#f7f8fb' : '#090909');
+    document.documentElement.setAttribute('data-theme', state.theme);
+    const bright = state.theme === 'light' || state.theme === 'sakura';
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', bright ? '#edf4ff' : '#050814');
     $$('.theme-choice').forEach(btn => btn.classList.toggle('is-active', btn.dataset.theme === state.theme));
     saveState();
   }
@@ -782,7 +783,7 @@
     window.addEventListener('beforeinstallprompt', e => {
       e.preventDefault();
       deferredInstallPrompt = e;
-      els.installBtn.textContent = '+ Установить';
+      els.installBtn.textContent = '+ Install';
     });
 
     document.addEventListener('visibilitychange', () => {
@@ -795,8 +796,14 @@
     }
     window.addEventListener('resize', syncViewportVars);
     window.addEventListener('orientationchange', syncViewportVars);
+    const standaloneMq = window.matchMedia('(display-mode: standalone)');
+    if (standaloneMq.addEventListener) standaloneMq.addEventListener('change', syncViewportVars);
   }
 
+
+  function isStandalone() {
+    return window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
+  }
 
   function syncViewportVars() {
     const vv = window.visualViewport;
@@ -804,6 +811,8 @@
     const top = vv ? vv.offsetTop : 0;
     document.documentElement.style.setProperty('--vvh', `${height * 0.01}px`);
     document.documentElement.style.setProperty('--ios-top-offset', `${Math.max(0, top)}px`);
+    document.body.classList.toggle('standalone-mode', isStandalone());
+    document.body.classList.toggle('browser-mode', !isStandalone());
   }
 
   function dailyChallenge() {

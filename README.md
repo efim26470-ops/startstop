@@ -1,27 +1,5 @@
-# NeuroTap v6
+# NeuroTap v7
 
-PWA-тренажёр реакции и внимания для GitHub Pages. Версия v6 переработана под iOS/Safari/PWA и получила новый самостоятельный Launch/Pulse-экран без копирования исходного Reflex-дизайна.
+Static PWA reaction trainer for GitHub Pages.
 
-## Что внутри
-
-- Grid — активные ячейки.
-- Pulse — реакция на зелёный импульс, ранний тап = misfire.
-- Target — плавающие цели.
-- Echo — повторение светового паттерна.
-- Code — числа по порядку.
-- Focus — выбор цвета текста.
-
-## v6 fixes
-
-- Safe-area/notch для iPhone.
-- `visualViewport` для корректной высоты Safari/PWA.
-- Новый Pulse-дизайн: сигнальные панели вместо светофорных колонн.
-- Исправлены вылезающие лампы и обрезание нижней панели.
-- Мобильная сетка режимов 3×2 вместо обрезающейся строки.
-- Обновлён service worker cache до `neurotap-v6.0.0`.
-
-## Установка на GitHub Pages
-
-Загрузи содержимое папки в корень репозитория и включи GitHub Pages.
-
-На iPhone: Safari → Поделиться → На экран Домой.
+Fixes in v7: rebuilt Apple-like visual system, working themes, vertical Pulse lights, iOS safe-area/browser/PWA layout fixes, cache update.

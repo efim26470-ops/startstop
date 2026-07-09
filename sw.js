@@ -1,9 +1,9 @@
-const CACHE_NAME = 'neurotap-v6.0.0';
+const CACHE_NAME = 'neurotap-v7.0.0';
 const ASSETS = [
   './',
   './index.html',
-  './styles.css?v=6.0',
-  './app.js?v=6.0',
+  './styles.css?v=7.0',
+  './app.js?v=7.0',
   './manifest.webmanifest',
   './assets/icon-192.png',
   './assets/icon-512.png',
@@ -22,8 +22,29 @@ self.addEventListener('activate', event => {
   self.clients.claim();
 });
 
+function isFreshAsset(request) {
+  const url = new URL(request.url);
+  return url.pathname.endsWith('/') ||
+    url.pathname.endsWith('/index.html') ||
+    url.pathname.endsWith('/styles.css') ||
+    url.pathname.endsWith('/app.js') ||
+    url.pathname.endsWith('/manifest.webmanifest');
+}
+
 self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET') return;
+
+  if (isFreshAsset(event.request)) {
+    event.respondWith(
+      fetch(event.request).then(response => {
+        const clone = response.clone();
+        caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
+        return response;
+      }).catch(() => caches.match(event.request).then(cached => cached || caches.match('./index.html')))
+    );
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request).then(cached => cached || fetch(event.request).then(response => {
       const clone = response.clone();
