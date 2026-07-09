@@ -246,8 +246,17 @@
   function setTheme(id) {
     state.theme = themes.some(t => t.id === id) ? id : 'dark';
     document.documentElement.setAttribute('data-theme', state.theme);
-    const bright = state.theme === 'light' || state.theme === 'sakura';
-    document.querySelector('meta[name="theme-color"]').setAttribute('content', bright ? '#edf4ff' : '#050814');
+    const themeColor = {
+      dark: '#071426',
+      light: '#edf4ff',
+      neon: '#05071c',
+      ember: '#1f0b08',
+      ocean: '#041827',
+      sakura: '#fff2f8',
+      matrix: '#020804'
+    }[state.theme] || '#071426';
+    const metaTheme = document.querySelector('meta[name="theme-color"]');
+    if (metaTheme) metaTheme.setAttribute('content', themeColor);
     $$('.theme-choice').forEach(btn => btn.classList.toggle('is-active', btn.dataset.theme === state.theme));
     saveState();
   }
@@ -783,7 +792,7 @@
     window.addEventListener('beforeinstallprompt', e => {
       e.preventDefault();
       deferredInstallPrompt = e;
-      els.installBtn.textContent = '+ Install';
+      els.installBtn.innerHTML = '<span class="install-icon" aria-hidden="true"></span><span>Install</span>';
     });
 
     document.addEventListener('visibilitychange', () => {

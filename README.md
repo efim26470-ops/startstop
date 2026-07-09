@@ -1,5 +1,5 @@
-# NeuroTap v7
+# NeuroTap v8 UI Fix
 
-Static PWA reaction trainer for GitHub Pages.
+PWA-тренажёр реакции и внимания для GitHub Pages.
 
-Fixes in v7: rebuilt Apple-like visual system, working themes, vertical Pulse lights, iOS safe-area/browser/PWA layout fixes, cache update.
+В v8 исправлена мобильная верстка: safe-area, темы, footer, Pulse, Grid, Target, Echo, Code, Focus.
