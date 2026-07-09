@@ -3,17 +3,17 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
-  <meta name="theme-color" content="#090909" />
+  <meta name="theme-color" content="#070910" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="NeuroTap" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="format-detection" content="telephone=no" />
-  <title>NeuroTap — реакция и внимание</title>
+  <title>NeuroTap v5 — реакция и внимание</title>
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
   <link rel="icon" href="assets/icon-192.png" />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css?v=5.0" />
 </head>
 <body>
   <div class="noise" aria-hidden="true"></div>
@@ -45,7 +45,7 @@
 
     <nav class="mode-strip" aria-label="Режимы тренировки">
       <button class="mode-tab is-active" data-mode="tiles" type="button">Grid</button>
-      <button class="mode-tab" data-mode="race" type="button">Launch</button>
+      <button class="mode-tab" data-mode="race" type="button">Pulse</button>
       <button class="mode-tab" data-mode="aim" type="button">Target</button>
       <button class="mode-tab" data-mode="sequence" type="button">Echo</button>
       <button class="mode-tab" data-mode="matrix" type="button">Code</button>
@@ -64,7 +64,7 @@
       <div class="tiles-grid" id="tilesGrid" aria-label="Сетка реакции"></div>
       <div class="race-zone hidden" id="raceZone">
         <div class="lights" id="lights"></div>
-        <p class="instruction" id="raceInstruction">// HOLD FOCUS. TAP TO ARM //</p>
+        <p class="instruction" id="raceInstruction">// CHARGE THE SIGNAL //</p>
         <button class="race-button" id="raceButton" type="button" aria-label="Старт">
           <span class="race-ring"></span>
           <span class="play-icon">▶</span>
@@ -141,7 +141,7 @@
       </div>
       <div class="help-list">
         <article><b>Grid</b><span>лови активную ячейку в сетке.</span></article>
-        <article><b>Launch</b><span>вооружи запуск и жди зелёный импульс.</span></article>
+        <article><b>Pulse</b><span>заряди сигнал и нажми только после зелёного импульса.</span></article>
         <article><b>Target</b><span>поражай плавающие цели как можно быстрее.</span></article>
         <article><b>Echo</b><span>запоминай световой паттерн и повторяй его.</span></article>
         <article><b>Code</b><span>находи числа по порядку без ошибок.</span></article>
@@ -152,6 +152,6 @@
   </aside>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script src="app.js" defer></script>
+  <script src="app.js?v=5.0" defer></script>
 </body>
 </html>

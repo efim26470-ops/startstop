@@ -21,6 +21,8 @@
   --radius-md: 16px;
   --safe-top: env(safe-area-inset-top, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --ios-top-offset: 0px;
+  --vvh: 1vh;
   --font: ui-rounded, "SF Pro Rounded", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
@@ -50,7 +52,7 @@
 * { box-sizing: border-box; }
 html { height: 100%; background: var(--bg); }
 body {
-  min-height: 100dvh;
+  min-height: calc(var(--vvh) * 100);
   margin: 0;
   overflow-x: hidden;
   background:
@@ -82,9 +84,9 @@ button:active { transform: translateY(1px) scale(.99); }
 
 .app-shell {
   width: min(100%, 820px);
-  min-height: 100dvh;
+  min-height: calc(var(--vvh) * 100);
   margin: 0 auto;
-  padding: calc(14px + var(--safe-top)) 18px calc(16px + var(--safe-bottom));
+  padding: calc(18px + max(var(--safe-top), var(--ios-top-offset))) 18px calc(16px + max(6px, var(--safe-bottom))) 18px;
   display: grid;
   grid-template-rows: auto auto auto auto minmax(0, 1fr) auto auto;
   gap: 12px;
@@ -366,7 +368,7 @@ body[data-mode="race"] .race-zone .instruction { display:block; }
   .mini-value, .progress-value { font-size: clamp(22px, 7vw, 30px); }
   .mini-label { font-size: 10px; }
 
-  .mode-strip { display:grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap:5px; overflow: visible; }
+  .mode-strip { display:grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap:6px; overflow: visible; }
   .mode-tab { min-width: 0; width:100%; padding: 8px 3px; border-radius: 12px; font-size: 11px; letter-spacing: -.05em; }
   .segmented { gap:5px; padding:4px; border-radius: 14px; }
   .seg-btn { padding: 8px 5px; border-radius: 11px; font-size: 12px; }
@@ -397,7 +399,7 @@ body[data-mode="race"] .race-zone .instruction { display:block; }
   .stroop-btn { min-height: 44px; border-radius: 13px; font-size: 13px; }
 
   .stats-card { display:none; }
-  .footerbar { min-height: 34px; gap:8px; }
+  .footerbar { min-height: 36px; gap:6px; }
   .brand { font-size: 18px; }
   .brand small { font-size: 7px; margin-top: 0; }
   .level-pill { height: 30px; padding-inline: 10px; font-size: 12px; border-radius: 12px; }
@@ -407,7 +409,7 @@ body[data-mode="race"] .race-zone .instruction { display:block; }
 }
 
 @media (max-width: 380px), (max-height: 700px) {
-  .app-shell { gap: 6px; padding-top: calc(7px + var(--safe-top)); }
+  .app-shell { gap: 6px; padding-top: calc(20px + max(var(--safe-top), var(--ios-top-offset))); }
   .topbar { min-height: 30px; }
   .profile-chip { font-size: 11px; }
   .premium-pill { height: 28px; font-size: 12px; }
@@ -426,4 +428,521 @@ body[data-mode="race"] .race-zone .instruction { display:block; }
   .footerbar { min-height: 30px; }
   body[data-mode="race"] .hero-card { min-height: 80px; }
   body[data-mode="race"] .main-time { font-size: clamp(29px, 9.5vw, 40px); }
+}
+
+
+/* --- iOS / notch / compact visual fixes --- */
+.footerbar > * { min-width: 0; }
+.brand { white-space: nowrap; overflow: visible; }
+.level-pill { flex: 0 0 auto; }
+.topbar { position: relative; z-index: 2; }
+.hero-card, .game-zone, .stats-card, .segmented, .mode-tab, .seg-btn, .premium-pill, .icon-btn, .gamepad, .light-pillar, .race-button, .stroop-word { backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+
+body[data-mode="race"] .game-zone {
+  align-items: stretch;
+}
+body[data-mode="race"] .race-zone {
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  align-items: center;
+  justify-items: center;
+  width: 100%;
+  height: 100%;
+  gap: 10px;
+}
+body[data-mode="race"] .lights {
+  width: 100%;
+  max-width: 620px;
+  align-self: start;
+}
+body[data-mode="race"] .race-button {
+  align-self: center;
+}
+body[data-mode="race"] .race-zone .instruction {
+  min-height: 0;
+  margin-top: 2px;
+}
+.light-pillar {
+  overflow: hidden;
+}
+.bulb {
+  width: clamp(26px, 8.8vw, 56px);
+  height: clamp(26px, 8.8vw, 56px);
+  max-width: 100%;
+  max-height: 100%;
+}
+
+@media (max-width: 540px) {
+  .app-shell {
+    height: calc(var(--vvh) * 100);
+    min-height: calc(var(--vvh) * 100);
+    max-height: calc(var(--vvh) * 100);
+    padding: calc(18px + max(var(--safe-top), var(--ios-top-offset))) 12px calc(12px + max(8px, var(--safe-bottom))) 12px;
+    gap: 8px;
+  }
+  .topbar {
+    min-height: 38px;
+    padding-top: 2px;
+  }
+  .hero-card {
+    min-height: 102px;
+  }
+  .mode-strip {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-auto-rows: 1fr;
+    gap: 6px;
+    overflow: visible;
+  }
+  .mode-tab {
+    min-height: 34px;
+    font-size: 11px;
+    padding: 8px 4px;
+    line-height: 1.05;
+  }
+  .game-zone {
+    min-height: 0;
+    align-self: stretch;
+  }
+  .race-zone {
+    gap: 8px;
+  }
+  .lights {
+    gap: 8px;
+    max-width: 100%;
+  }
+  .light-pillar {
+    height: clamp(110px, 24svh, 156px);
+    min-height: 110px;
+    border-radius: 18px;
+    padding: 8px 4px;
+    gap: 3px;
+  }
+  .bulb {
+    width: clamp(24px, 8.2vw, 40px);
+    height: clamp(24px, 8.2vw, 40px);
+  }
+  .race-button {
+    width: clamp(112px, 28svh, 162px);
+    max-width: 44vw;
+  }
+  body[data-mode="race"] .race-zone .instruction,
+  body[data-mode="race"] #instruction {
+    font-size: 10px;
+    line-height: 1.15;
+  }
+  .footerbar {
+    min-height: 36px;
+    gap: 6px;
+  }
+  .brand {
+    font-size: 16px;
+    letter-spacing: -.05em;
+    flex: 0 1 auto;
+  }
+  .brand small { font-size: 6px; }
+  .level-pill {
+    height: 30px;
+    font-size: 11px;
+    padding-inline: 9px;
+  }
+  .gamepad { flex: 0 0 auto; }
+}
+
+@media (max-width: 380px), (max-height: 700px) {
+  .app-shell {
+    padding-top: calc(20px + max(var(--safe-top), var(--ios-top-offset)));
+  }
+  .topbar { min-height: 36px; }
+  .hero-card { min-height: 86px; }
+  .mode-strip { gap: 5px; }
+  .mode-tab { min-height: 31px; font-size: 10px; }
+  .light-pillar {
+    height: clamp(96px, 22svh, 134px);
+    min-height: 96px;
+  }
+  .bulb {
+    width: clamp(21px, 7.4vw, 34px);
+    height: clamp(21px, 7.4vw, 34px);
+  }
+  .race-button {
+    width: clamp(96px, 24svh, 138px);
+    max-width: 40vw;
+  }
+  .brand { font-size: 15px; }
+  .level-pill { font-size: 10px; }
+}
+
+
+/* =========================================================
+   NeuroTap v5 — independent iOS layout and Pulse redesign
+   Fixes: notch safe area, no clipped launch modules, no footer crop.
+   ========================================================= */
+:root {
+  --shell-pad-x: 14px;
+  --glass-blur: 18px;
+}
+html {
+  min-height: -webkit-fill-available;
+  background: var(--bg);
+}
+body {
+  min-height: calc(var(--vvh) * 100);
+  overflow-x: hidden;
+  overscroll-behavior: none;
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(118deg, transparent 0 33%, rgba(255,255,255,.035) 33.2% 33.6%, transparent 33.8% 100%),
+    radial-gradient(circle at 75% 12%, color-mix(in srgb, var(--accent2) 18%, transparent), transparent 32%),
+    radial-gradient(circle at 18% 78%, color-mix(in srgb, var(--accent) 15%, transparent), transparent 34%);
+  opacity: .9;
+}
+.app-shell {
+  width: min(100%, 820px);
+  min-height: calc(var(--vvh) * 100);
+  padding-top: calc(18px + max(var(--safe-top), var(--ios-top-offset)));
+  padding-right: max(var(--shell-pad-x), env(safe-area-inset-right, 0px));
+  padding-left: max(var(--shell-pad-x), env(safe-area-inset-left, 0px));
+  padding-bottom: calc(14px + max(8px, var(--safe-bottom)));
+  isolation: isolate;
+}
+.ios-device .app-shell {
+  padding-top: calc(24px + max(var(--safe-top), var(--ios-top-offset)));
+}
+.topbar {
+  min-height: 42px;
+  align-items: center;
+}
+.hero-card, .mode-tab, .segmented, .seg-btn, .light-pillar, .race-button,
+.stats-card, .stat, .premium-pill, .icon-btn, .gamepad, .level-pill, .drawer-panel {
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  backdrop-filter: blur(var(--glass-blur));
+}
+.hero-card {
+  transform: translateZ(0);
+}
+.mode-strip {
+  min-width: 0;
+}
+.mode-tab, .seg-btn {
+  white-space: nowrap;
+}
+.footerbar {
+  overflow: visible;
+  padding-bottom: 1px;
+}
+.footerbar > * {
+  min-width: 0;
+}
+.brand {
+  flex: 0 1 auto;
+  min-width: 58px;
+  white-space: nowrap;
+  overflow: visible;
+}
+.level-pill {
+  flex: 0 0 auto;
+}
+.gamepad {
+  flex: 0 0 auto;
+}
+
+/* Pulse mode no longer imitates a traffic-light stack: it is a compact signal board. */
+body[data-mode="race"] .game-zone {
+  overflow: visible;
+  border-radius: 24px;
+}
+body[data-mode="race"] .race-zone {
+  width: 100%;
+  min-height: 0;
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr);
+  align-content: center;
+  align-items: center;
+  justify-items: center;
+  gap: clamp(10px, 2.2vh, 18px);
+}
+body[data-mode="race"] .lights {
+  width: min(100%, 680px);
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(8px, 2vw, 14px);
+  padding: 0;
+  align-self: end;
+}
+.light-pillar {
+  height: clamp(58px, 10vh, 92px);
+  min-height: 0;
+  overflow: hidden;
+  border-radius: 22px;
+  padding: clamp(8px, 1.6vh, 14px);
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-rows: 1fr;
+  gap: clamp(5px, 1.1vw, 9px);
+  place-items: center;
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--panel2) 78%, white 5%), color-mix(in srgb, var(--panel) 86%, black)),
+    radial-gradient(circle at 12% 10%, color-mix(in srgb, var(--accent2) 10%, transparent), transparent 42%);
+  border: 1px solid color-mix(in srgb, var(--line) 72%, var(--accent2));
+  box-shadow:
+    inset 0 1px 1px rgba(255,255,255,.12),
+    inset 0 -18px 26px rgba(0,0,0,.16),
+    0 14px 30px rgba(0,0,0,.18);
+}
+.light-pillar::before {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border-radius: 16px;
+  border: 1px solid color-mix(in srgb, var(--accent2) 12%, transparent);
+  pointer-events: none;
+  opacity: .72;
+}
+.bulb {
+  width: min(100%, 34px);
+  height: clamp(8px, 1.6vh, 14px);
+  aspect-ratio: auto;
+  border-radius: 999px;
+  background:
+    linear-gradient(90deg, rgba(255,255,255,.10), rgba(255,255,255,.015)),
+    color-mix(in srgb, var(--text) 10%, black 70%);
+  box-shadow:
+    inset 0 1px 1px rgba(255,255,255,.11),
+    inset 0 -4px 8px rgba(0,0,0,.42),
+    0 4px 8px rgba(0,0,0,.24);
+  transform: none;
+}
+.bulb.red {
+  background: linear-gradient(90deg, #ffd5de, var(--hot) 36%, #a20d34);
+  box-shadow: 0 0 16px color-mix(in srgb, var(--hot) 48%, transparent), inset 0 1px 1px rgba(255,255,255,.42);
+}
+.bulb.green {
+  background: linear-gradient(90deg, #dffff0, var(--good) 38%, #009d64);
+  box-shadow: 0 0 18px color-mix(in srgb, var(--good) 52%, transparent), inset 0 1px 1px rgba(255,255,255,.42);
+}
+.race-button {
+  width: clamp(138px, 28vh, 260px);
+  max-width: min(58vw, 260px);
+  align-self: start;
+  background:
+    radial-gradient(circle at 50% 48%, color-mix(in srgb, var(--accent2) 12%, transparent), transparent 28%),
+    radial-gradient(circle, rgba(255,255,255,.09), rgba(255,255,255,.025) 48%, rgba(0,0,0,.18));
+}
+.race-button::before {
+  content: "";
+  position: absolute;
+  inset: 22%;
+  border-radius: inherit;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--text) 18%, transparent), transparent);
+  filter: blur(1px);
+  opacity: .42;
+}
+.race-ring {
+  inset: 10%;
+  opacity: .72;
+}
+.play-icon {
+  transform: translateX(4%);
+}
+body[data-mode="race"] .race-zone .instruction {
+  color: color-mix(in srgb, var(--text) 72%, var(--muted));
+  text-shadow: 0 1px 12px rgba(0,0,0,.28);
+}
+
+@media (min-width: 760px) {
+  body[data-mode="race"] .lights {
+    max-width: 760px;
+  }
+  .light-pillar {
+    height: 86px;
+  }
+  .race-button {
+    width: 230px;
+  }
+}
+
+@media (max-width: 540px) {
+  body { overflow: hidden; }
+  .app-shell {
+    height: calc(var(--vvh) * 100);
+    min-height: calc(var(--vvh) * 100);
+    max-height: calc(var(--vvh) * 100);
+    grid-template-rows: auto auto auto auto minmax(0, 1fr) auto;
+    gap: 7px;
+    --shell-pad-x: 12px;
+    padding-top: calc(20px + max(var(--safe-top), var(--ios-top-offset)));
+    padding-bottom: calc(12px + max(8px, var(--safe-bottom)));
+  }
+  .ios-device .app-shell {
+    padding-top: calc(30px + max(var(--safe-top), var(--ios-top-offset)));
+  }
+  .topbar {
+    min-height: 38px;
+  }
+  .profile-chip {
+    min-width: 68px;
+    max-width: 88px;
+  }
+  .profile-chip span:last-child {
+    max-width: 52px;
+  }
+  .premium-pill {
+    height: 30px;
+  }
+  .icon-btn, .gamepad {
+    width: 32px;
+    height: 32px;
+  }
+  .hero-card {
+    min-height: 98px;
+    border-radius: 22px;
+    padding: 12px 14px 11px;
+  }
+  body[data-mode="race"] .hero-card {
+    min-height: 84px;
+  }
+  .main-time {
+    font-size: clamp(35px, 10.6vw, 48px);
+  }
+  body[data-mode="race"] .main-time {
+    font-size: clamp(30px, 9.2vw, 40px);
+  }
+  .mini-value, .progress-value {
+    font-size: clamp(20px, 6.3vw, 28px);
+  }
+  .mini-label {
+    font-size: 9px;
+  }
+  .mode-strip {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-auto-rows: 30px;
+    gap: 5px;
+    overflow: visible;
+  }
+  .mode-tab {
+    width: 100%;
+    min-width: 0;
+    min-height: 30px;
+    padding: 0 4px;
+    border-radius: 11px;
+    font-size: 10.5px;
+    line-height: 1;
+  }
+  .segmented {
+    padding: 3px;
+    gap: 4px;
+    border-radius: 13px;
+  }
+  .seg-btn {
+    min-height: 29px;
+    padding: 0 4px;
+    border-radius: 10px;
+    font-size: 11px;
+  }
+  .game-zone {
+    min-height: 0;
+    overflow: visible;
+  }
+  .instruction {
+    font-size: 9.5px;
+    line-height: 1.1;
+    min-height: 12px;
+  }
+  body[data-mode="race"] .race-zone {
+    grid-template-rows: auto auto minmax(0, 1fr);
+    gap: 7px;
+    align-content: center;
+  }
+  body[data-mode="race"] .lights {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 7px;
+    width: 100%;
+    max-width: 360px;
+  }
+  .light-pillar {
+    height: clamp(42px, 7.2vh, 58px);
+    border-radius: 15px;
+    padding: 7px;
+    gap: 5px;
+  }
+  .light-pillar::before {
+    inset: 5px;
+    border-radius: 11px;
+  }
+  .bulb {
+    width: min(100%, 28px);
+    height: clamp(6px, 1.1vh, 9px);
+  }
+  .race-button {
+    width: clamp(104px, 22vh, 148px);
+    max-width: 39vw;
+  }
+  .play-icon {
+    font-size: clamp(30px, 8.5vw, 40px);
+  }
+  .race-ring {
+    inset: 8%;
+  }
+  .tiles-grid, .sequence-grid, .matrix-grid {
+    gap: 6px;
+  }
+  .tile, .seq-tile, .matrix-cell {
+    border-radius: 10px;
+  }
+  .stats-card { display: none; }
+  .footerbar {
+    min-height: 32px;
+    gap: 5px;
+  }
+  .brand {
+    font-size: 15px;
+    min-width: 56px;
+  }
+  .brand small {
+    font-size: 6px;
+    letter-spacing: .28em;
+  }
+  .level-pill {
+    height: 29px;
+    padding-inline: 8px;
+    font-size: 10px;
+    max-width: 132px;
+  }
+}
+
+@media (max-width: 380px), (max-height: 700px) {
+  .app-shell {
+    gap: 5px;
+    padding-top: calc(18px + max(var(--safe-top), var(--ios-top-offset)));
+    padding-bottom: calc(8px + max(6px, var(--safe-bottom)));
+  }
+  .ios-device .app-shell {
+    padding-top: calc(28px + max(var(--safe-top), var(--ios-top-offset)));
+  }
+  .topbar { min-height: 34px; }
+  .hero-card { min-height: 78px; }
+  body[data-mode="race"] .hero-card { min-height: 68px; }
+  .main-time { font-size: clamp(28px, 9.2vw, 38px); }
+  body[data-mode="race"] .main-time { font-size: clamp(26px, 8.4vw, 34px); }
+  .mini-value, .progress-value { font-size: 18px; }
+  .mode-strip { grid-auto-rows: 27px; gap: 4px; }
+  .mode-tab { min-height: 27px; font-size: 9.5px; }
+  .seg-btn { min-height: 26px; font-size: 10px; }
+  body[data-mode="race"] .lights { gap: 5px; max-width: 320px; }
+  .light-pillar { height: clamp(36px, 6.3vh, 48px); border-radius: 13px; padding: 6px; gap: 4px; }
+  .bulb { height: 6px; width: min(100%, 24px); }
+  .race-button { width: clamp(88px, 19vh, 124px); max-width: 35vw; }
+  .play-icon { font-size: clamp(25px, 7.5vw, 34px); }
+  .footerbar { min-height: 28px; }
+  .brand { font-size: 13px; min-width: 48px; }
+  .level-pill { height: 26px; font-size: 9px; }
+  .icon-btn, .gamepad { width: 28px; height: 28px; }
 }

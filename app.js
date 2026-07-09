@@ -23,7 +23,7 @@
 
   const modeInfo = {
     tiles: { title: 'Grid', bestType: 'time', instruction: '// CATCH THE ACTIVE NODE //' },
-    race: { title: 'Launch', bestType: 'reaction', instruction: '// ARM THE LAUNCH. WAIT FOR GREEN //' },
+    race: { title: 'Pulse', bestType: 'reaction', instruction: '// CHARGE SIGNAL. WAIT FOR GREEN //' },
     aim: { title: 'Target', bestType: 'time', instruction: '// HIT THE FLOATING TARGETS //' },
     sequence: { title: 'Echo', bestType: 'level', instruction: '// REPEAT THE LIGHT PATTERN //' },
     matrix: { title: 'Code', bestType: 'time', instruction: '// DECODE NUMBERS IN ORDER //' },
@@ -357,8 +357,8 @@
       els.lights.appendChild(pillar);
     }
     els.raceButton.classList.remove('ready');
-    els.raceInstruction.textContent = '// TAP TO ARM THE LAUNCH //';
-    els.instruction.textContent = '// WAIT FOR GREEN. EARLY TAP = FALSE START //';
+    els.raceInstruction.textContent = '// TAP TO CHARGE THE SIGNAL //';
+    els.instruction.textContent = '// GREEN ONLY. EARLY TAP = MISFIRE //';
     game = { phase: 'idle', timeout: 0, goAt: 0, falseStarts: 0 };
   }
 
@@ -381,7 +381,7 @@
       els.raceButton.classList.remove('ready');
       els.mainTime.textContent = 'FALSE';
       els.progressValue.textContent = 'START';
-      els.raceInstruction.textContent = '// TOO EARLY. TAP TO TRY AGAIN //';
+      els.raceInstruction.textContent = '// MISFIRE. TAP TO RECHARGE //';
       beep('bad'); vibrate([45, 40, 45]);
       updateStats({ accuracy: 0 });
       return;
@@ -391,7 +391,7 @@
       game.phase = 'done';
       els.mainTime.textContent = fmt(reaction);
       els.progressValue.textContent = 'GO';
-      els.raceInstruction.textContent = '// NICE LAUNCH. TAP TO RESTART //';
+      els.raceInstruction.textContent = '// SIGNAL LOCKED. TAP TO RESTART //';
       recordResult(reaction, { falseStarts: game.falseStarts });
     }
   }
@@ -404,7 +404,7 @@
     els.raceButton.classList.remove('ready');
     els.mainTime.textContent = '0.000';
     els.progressValue.textContent = 'WAIT';
-    els.raceInstruction.textContent = '// WAIT... //';
+    els.raceInstruction.textContent = '// SYNCING... //';
     beep('tick'); vibrate(10);
     for (let i = 0; i < 4; i++) {
       game.timeouts.push(setTimeout(() => {
@@ -754,6 +754,22 @@
     document.addEventListener('visibilitychange', () => {
       if (document.hidden && state.mode === 'race') clearRaceTimeout();
     });
+
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', syncViewportVars);
+      window.visualViewport.addEventListener('scroll', syncViewportVars);
+    }
+    window.addEventListener('resize', syncViewportVars);
+    window.addEventListener('orientationchange', syncViewportVars);
+  }
+
+
+  function syncViewportVars() {
+    const vv = window.visualViewport;
+    const height = vv ? vv.height : window.innerHeight;
+    const top = vv ? vv.offsetTop : 0;
+    document.documentElement.style.setProperty('--vvh', `${height * 0.01}px`);
+    document.documentElement.style.setProperty('--ios-top-offset', `${Math.max(0, top)}px`);
   }
 
   function dailyChallenge() {
@@ -777,6 +793,10 @@
   }
 
   function boot() {
+    syncViewportVars();
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    document.documentElement.classList.toggle('ios-device', isIOS);
+
     buildThemes();
     bindEvents();
     els.soundToggle.checked = !!state.sound;
