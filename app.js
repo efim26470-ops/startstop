@@ -1,18 +1,18 @@
 (() => {
   'use strict';
 
-  const STORAGE_KEY = 'reflexlab.v1';
+  const STORAGE_KEY = 'neurotap.v3';
   const $ = (sel, root = document) => root.querySelector(sel);
   const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
 
   const themes = [
-    { id: 'dark', name: 'Reflex Dark', swatch: ['#080808', '#ff4c35'] },
-    { id: 'light', name: 'Soft Light', swatch: ['#f7f8fb', '#ff4b34'] },
-    { id: 'neon', name: 'Neon Pulse', swatch: ['#030511', '#00e5ff'] },
-    { id: 'ember', name: 'Ember', swatch: ['#130704', '#ff7a18'] },
-    { id: 'ocean', name: 'Ocean', swatch: ['#031017', '#33d6ff'] },
-    { id: 'sakura', name: 'Sakura', swatch: ['#fff1f6', '#ff5da8'] },
-    { id: 'matrix', name: 'Matrix', swatch: ['#020703', '#32ff70'] }
+    { id: 'dark', name: 'Void Console', swatch: ['#070910', '#8b5cff'] },
+    { id: 'light', name: 'Frost Lab', swatch: ['#eef2ff', '#5b5cff'] },
+    { id: 'neon', name: 'Cyber Bloom', swatch: ['#030617', '#00eaff'] },
+    { id: 'ember', name: 'Lava Core', swatch: ['#120706', '#ff9b22'] },
+    { id: 'ocean', name: 'Deep Signal', swatch: ['#031018', '#27d9ff'] },
+    { id: 'sakura', name: 'Pink Quartz', swatch: ['#fff1f7', '#ff63b6'] },
+    { id: 'matrix', name: 'Bio Terminal', swatch: ['#020704', '#36ff79'] }
   ];
 
   const levels = {
@@ -22,12 +22,12 @@
   };
 
   const modeInfo = {
-    tiles: { title: 'Tiles', bestType: 'time', instruction: '// TAP ON THE COLORED TILE TO START //' },
-    race: { title: 'Race', bestType: 'reaction', instruction: '// TAP WHEN YOU ARE READY TO RACE //' },
-    aim: { title: 'Aim', bestType: 'time', instruction: '// TAP THE TARGETS AS FAST AS YOU CAN //' },
-    sequence: { title: 'Memory', bestType: 'level', instruction: '// REMEMBER THE GLOWING TILES //' },
-    matrix: { title: 'Matrix', bestType: 'time', instruction: '// TAP NUMBERS IN ORDER //' },
-    stroop: { title: 'Color', bestType: 'time', instruction: '// TAP THE TEXT COLOR, NOT THE WORD //' }
+    tiles: { title: 'Grid', bestType: 'time', instruction: '// CATCH THE ACTIVE NODE //' },
+    race: { title: 'Launch', bestType: 'reaction', instruction: '// ARM THE LAUNCH. WAIT FOR GREEN //' },
+    aim: { title: 'Target', bestType: 'time', instruction: '// HIT THE FLOATING TARGETS //' },
+    sequence: { title: 'Echo', bestType: 'level', instruction: '// REPEAT THE LIGHT PATTERN //' },
+    matrix: { title: 'Code', bestType: 'time', instruction: '// DECODE NUMBERS IN ORDER //' },
+    stroop: { title: 'Focus', bestType: 'time', instruction: '// CHOOSE THE TEXT COLOR //' }
   };
 
   const defaultState = {
@@ -204,7 +204,7 @@
     const runs = state.runs[key()] || 0;
     els.sessionStat.textContent = String(runs);
     const rank = Math.max(1, 20000 - state.globalRuns * 7 - Object.keys(state.bests).length * 13);
-    els.globalRank.textContent = `#${String(rank).padStart(5, '0')}`;
+    els.globalRank.textContent = `R-${String(rank).padStart(4, '0')}`;
     if (progressText !== null) els.progressValue.textContent = progressText;
   }
 
@@ -321,7 +321,7 @@
       game.started = true;
       game.lastTap = now;
       startTimer();
-      els.instruction.textContent = '// KEEP GOING //';
+      els.instruction.textContent = '// STAY IN FLOW //';
     } else {
       game.intervals.push(now - game.lastTap);
       game.lastTap = now;
@@ -334,7 +334,7 @@
       const total = (performance.now() - timerStart) / 1000;
       els.mainTime.textContent = fmt(total);
       recordResult(total, { misses: game.misses, avg: avg(game.intervals) });
-      els.instruction.textContent = '// DONE. TAP A TILE TO RESTART //';
+      els.instruction.textContent = '// COMPLETE. TAP ANY NODE TO RESTART //';
       initTiles();
       return;
     }
@@ -357,7 +357,7 @@
       els.lights.appendChild(pillar);
     }
     els.raceButton.classList.remove('ready');
-    els.raceInstruction.textContent = '// TAP WHEN YOU ARE READY TO RACE //';
+    els.raceInstruction.textContent = '// TAP TO ARM THE LAUNCH //';
     els.instruction.textContent = '// WAIT FOR GREEN. EARLY TAP = FALSE START //';
     game = { phase: 'idle', timeout: 0, goAt: 0, falseStarts: 0 };
   }
@@ -727,11 +727,11 @@
     $('#randomModeBtn').addEventListener('click', () => {
       const modes = Object.keys(modeInfo);
       setMode(modes[randInt(0, modes.length - 1)]);
-      showToast('Случайный режим выбран');
+      showToast('Режим перемешан');
     });
     $('#dailyBtn').addEventListener('click', dailyChallenge);
     $('#resetBtn').addEventListener('click', () => {
-      if (confirm('Сбросить все рекорды ReflexLab?')) {
+      if (confirm('Сбросить все рекорды NeuroTap?')) {
         state.bests = {}; state.runs = {}; state.globalRuns = 0; saveState(); updateHud(defaultProgress());
         showToast('Рекорды сброшены');
       }

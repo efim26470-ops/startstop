@@ -1,13 +1,13 @@
 {
-  "name": "ReflexLab — Reaction Trainer",
-  "short_name": "ReflexLab",
-  "description": "Минималистичный PWA-тренажёр реакции в стиле iOS: плитки, стартовые огни, цели, память, матрица и цветовой тест.",
+  "name": "NeuroTap — Reaction Trainer",
+  "short_name": "NeuroTap",
+  "description": "PWA-тренажёр реакции и внимания: Grid, Launch, Target, Echo, Code и Focus. Работает локально и хранит рекорды на устройстве.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#070707",
-  "theme_color": "#090909",
+  "background_color": "#070910",
+  "theme_color": "#070910",
   "icons": [
     { "src": "assets/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
     { "src": "assets/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }

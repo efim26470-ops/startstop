@@ -6,10 +6,10 @@
   <meta name="theme-color" content="#090909" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="ReflexLab" />
+  <meta name="apple-mobile-web-app-title" content="NeuroTap" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="format-detection" content="telephone=no" />
-  <title>ReflexLab — тренажёр реакции</title>
+  <title>NeuroTap — реакция и внимание</title>
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
   <link rel="icon" href="assets/icon-192.png" />
@@ -21,10 +21,10 @@
     <header class="topbar">
       <div class="profile-chip" aria-label="Профиль">
         <span class="medal">◉</span>
-        <span id="globalRank">#00001</span>
+        <span id="globalRank">R-0001</span>
       </div>
       <button class="premium-pill" id="dailyBtn" type="button" aria-label="Ежедневный челлендж">
-        <span>⚡</span><strong>Daily</strong>
+        <span>◈</span><strong>Pulse</strong>
       </button>
       <div class="top-actions">
         <button class="icon-btn" id="helpBtn" type="button" aria-label="Помощь">?</button>
@@ -44,12 +44,12 @@
     </section>
 
     <nav class="mode-strip" aria-label="Режимы тренировки">
-      <button class="mode-tab is-active" data-mode="tiles" type="button">Tiles</button>
-      <button class="mode-tab" data-mode="race" type="button">Race</button>
-      <button class="mode-tab" data-mode="aim" type="button">Aim</button>
-      <button class="mode-tab" data-mode="sequence" type="button">Memory</button>
-      <button class="mode-tab" data-mode="matrix" type="button">Matrix</button>
-      <button class="mode-tab" data-mode="stroop" type="button">Color</button>
+      <button class="mode-tab is-active" data-mode="tiles" type="button">Grid</button>
+      <button class="mode-tab" data-mode="race" type="button">Launch</button>
+      <button class="mode-tab" data-mode="aim" type="button">Target</button>
+      <button class="mode-tab" data-mode="sequence" type="button">Echo</button>
+      <button class="mode-tab" data-mode="matrix" type="button">Code</button>
+      <button class="mode-tab" data-mode="stroop" type="button">Focus</button>
     </nav>
 
     <section class="level-card compact">
@@ -64,7 +64,7 @@
       <div class="tiles-grid" id="tilesGrid" aria-label="Сетка реакции"></div>
       <div class="race-zone hidden" id="raceZone">
         <div class="lights" id="lights"></div>
-        <p class="instruction" id="raceInstruction">// TAP WHEN YOU ARE READY TO RACE //</p>
+        <p class="instruction" id="raceInstruction">// HOLD FOCUS. TAP TO ARM //</p>
         <button class="race-button" id="raceButton" type="button" aria-label="Старт">
           <span class="race-ring"></span>
           <span class="play-icon">▶</span>
@@ -104,8 +104,8 @@
     </section>
 
     <footer class="footerbar">
-      <div class="brand"><span>re</span><b>flex</b><i>⚡</i><small>lab</small></div>
-      <button class="level-pill" id="installBtn" type="button">＋ На экран</button>
+      <div class="brand"><span>neu</span><b>ro</b><i>◈</i><small>tap</small></div>
+      <button class="level-pill" id="installBtn" type="button">＋ Добавить</button>
       <button class="gamepad" id="randomModeBtn" type="button" aria-label="Случайный режим">🎮</button>
     </footer>
   </main>
@@ -136,16 +136,16 @@
   <aside class="drawer" id="helpDrawer" aria-hidden="true">
     <div class="drawer-panel">
       <div class="drawer-head">
-        <h2>Режимы</h2>
+        <h2>Лаборатория реакции</h2>
         <button class="icon-btn" id="closeHelp" type="button">×</button>
       </div>
       <div class="help-list">
-        <article><b>Tiles</b><span>нажимай красную плитку, пока не закроешь серию.</span></article>
-        <article><b>Race</b><span>жди зелёный сигнал. Ранний тап — false start.</span></article>
-        <article><b>Aim</b><span>бей по появляющимся целям, чем выше сложность — тем меньше цель.</span></article>
-        <article><b>Memory</b><span>запоминай последовательность и повторяй её.</span></article>
-        <article><b>Matrix</b><span>тапай числа по порядку: 1, 2, 3…</span></article>
-        <article><b>Color</b><span>тапай цвет текста, а не значение слова.</span></article>
+        <article><b>Grid</b><span>лови активную ячейку в сетке.</span></article>
+        <article><b>Launch</b><span>вооружи запуск и жди зелёный импульс.</span></article>
+        <article><b>Target</b><span>поражай плавающие цели как можно быстрее.</span></article>
+        <article><b>Echo</b><span>запоминай световой паттерн и повторяй его.</span></article>
+        <article><b>Code</b><span>находи числа по порядку без ошибок.</span></article>
+        <article><b>Focus</b><span>выбирай цвет текста, игнорируя смысл слова.</span></article>
       </div>
       <p class="ios-note">Для iPhone: открой сайт в Safari → «Поделиться» → «На экран Домой».</p>
     </div>

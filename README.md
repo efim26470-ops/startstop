@@ -1,36 +1,35 @@
-# ReflexLab
+# NeuroTap
 
-Минималистичный PWA-тренажёр реакции для GitHub Pages. Работает полностью локально: рекорды, тема, звук и настройки хранятся в браузере через `localStorage`.
+Статический PWA-тренажёр реакции и внимания для GitHub Pages. Приложение работает без сервера: рекорды, темы и настройки сохраняются локально через `localStorage`.
 
-## Режимы
+## Что внутри
 
-- **Tiles** — нажимай подсвеченную плитку.
-- **Race** — стартовые огни, реакция на зелёный сигнал.
-- **Aim** — быстрые попадания по появляющимся целям.
-- **Memory** — повторяй световую последовательность.
-- **Matrix** — нажимай числа по порядку.
-- **Color** — тест Струпа: выбирай цвет текста, а не слово.
+- **Grid** — ловля активной ячейки.
+- **Launch** — реакция на зелёный импульс после случайной задержки.
+- **Target** — быстрые попадания по движущимся целям.
+- **Echo** — повторение световой последовательности.
+- **Code** — поиск чисел по порядку.
+- **Focus** — цветовой тест на концентрацию.
 
 ## Темы
 
-Reflex Dark, Soft Light, Neon Pulse, Ember, Ocean, Sakura, Matrix.
+Void Console, Frost Lab, Cyber Bloom, Lava Core, Deep Signal, Pink Quartz, Bio Terminal.
+
+## Что исправлено в этой версии
+
+- Мобильная верстка пересобрана под iPhone Safari/PWA.
+- Убран вертикальный скролл на телефоне.
+- Режим Launch больше не налезает на таймер, подсказки и нижнюю панель.
+- Вкладки режимов не обрезаются на узких экранах.
+- Интерфейс больше не копирует исходный Reflex: изменены форма элементов, палитра, бренд, сетка, карточки, панели и визуальный язык.
 
 ## Публикация на GitHub Pages
 
 1. Распакуй архив.
-2. Загрузи файлы в корень репозитория.
-3. Включи GitHub Pages: `Settings → Pages → Deploy from branch → main / root`.
+2. Загрузи содержимое папки в корень репозитория.
+3. Включи `Settings → Pages → Deploy from branch → main / root`.
 4. Открой опубликованный URL.
 
-## iPhone / PWA
+## iPhone
 
-Открой сайт через Safari → Поделиться → На экран Домой. Иконки и manifest уже добавлены.
-
-## v2 mobile visual fix
-
-- One-screen iPhone layout: body scrolling disabled on mobile, game is fitted into the visible viewport.
-- Race mode reworked for compact vertical layout: lights, status text, and start button no longer overlap.
-- All six modes fit in one row on narrow screens.
-- HUD and timer card are reduced on iPhone Safari/PWA to avoid clipping.
-- Bottom instruction is hidden in Race mode on mobile to remove duplicate text and save height.
-- Theme styling stays enabled; records and PWA installation remain unchanged.
+Открой сайт в Safari → «Поделиться» → «На экран Домой».

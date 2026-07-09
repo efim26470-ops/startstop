@@ -1,4 +1,4 @@
-const CACHE_NAME = 'reflexlab-v1.0.0';
+const CACHE_NAME = 'neurotap-v3.0.0';
 const ASSETS = [
   './',
   './index.html',
