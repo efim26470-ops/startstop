@@ -9,26 +9,26 @@
   <meta name="apple-mobile-web-app-title" content="NeuroTap" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="format-detection" content="telephone=no" />
-  <title>NeuroTap v5 — реакция и внимание</title>
+  <title>NeuroTap v6 — реакция и внимание</title>
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
   <link rel="icon" href="assets/icon-192.png" />
-  <link rel="stylesheet" href="styles.css?v=5.0" />
+  <link rel="stylesheet" href="styles.css?v=6.0" />
 </head>
 <body>
   <div class="noise" aria-hidden="true"></div>
   <main class="app-shell" id="appShell">
     <header class="topbar">
       <div class="profile-chip" aria-label="Профиль">
-        <span class="medal">◉</span>
+        <span class="medal" aria-hidden="true"></span>
         <span id="globalRank">R-0001</span>
       </div>
       <button class="premium-pill" id="dailyBtn" type="button" aria-label="Ежедневный челлендж">
-        <span>◈</span><strong>Pulse</strong>
+        <span class="daily-mark" aria-hidden="true"></span><strong>Pulse</strong>
       </button>
       <div class="top-actions">
         <button class="icon-btn" id="helpBtn" type="button" aria-label="Помощь">?</button>
-        <button class="icon-btn" id="settingsBtn" type="button" aria-label="Настройки">⚙</button>
+        <button class="icon-btn settings-glyph" id="settingsBtn" type="button" aria-label="Настройки"><span aria-hidden="true"></span></button>
       </div>
     </header>
 
@@ -64,10 +64,10 @@
       <div class="tiles-grid" id="tilesGrid" aria-label="Сетка реакции"></div>
       <div class="race-zone hidden" id="raceZone">
         <div class="lights" id="lights"></div>
-        <p class="instruction" id="raceInstruction">// CHARGE THE SIGNAL //</p>
+        <p class="instruction" id="raceInstruction">// ARM THE LIGHTS //</p>
         <button class="race-button" id="raceButton" type="button" aria-label="Старт">
           <span class="race-ring"></span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"></span>
         </button>
       </div>
       <div class="aim-zone hidden" id="aimZone">
@@ -86,7 +86,7 @@
       </div>
     </section>
 
-    <p class="instruction" id="instruction">// TAP ON THE COLORED TILE TO START //</p>
+    <p class="instruction" id="instruction">// CATCH THE ACTIVE NODE //</p>
 
     <section class="stats-card">
       <div class="stat">
@@ -104,9 +104,9 @@
     </section>
 
     <footer class="footerbar">
-      <div class="brand"><span>neu</span><b>ro</b><i>◈</i><small>tap</small></div>
-      <button class="level-pill" id="installBtn" type="button">＋ Добавить</button>
-      <button class="gamepad" id="randomModeBtn" type="button" aria-label="Случайный режим">🎮</button>
+      <div class="brand"><span>neu</span><b>ro</b><i aria-hidden="true"></i><small>tap</small></div>
+      <button class="level-pill" id="installBtn" type="button">+ Добавить</button>
+      <button class="gamepad" id="randomModeBtn" type="button" aria-label="Случайный режим">RND</button>
     </footer>
   </main>
 
@@ -152,6 +152,6 @@
   </aside>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script src="app.js?v=5.0" defer></script>
+  <script src="app.js?v=6.0" defer></script>
 </body>
 </html>

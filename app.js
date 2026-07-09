@@ -23,7 +23,7 @@
 
   const modeInfo = {
     tiles: { title: 'Grid', bestType: 'time', instruction: '// CATCH THE ACTIVE NODE //' },
-    race: { title: 'Pulse', bestType: 'reaction', instruction: '// CHARGE SIGNAL. WAIT FOR GREEN //' },
+    race: { title: 'Pulse', bestType: 'reaction', instruction: '// ARM LIGHTS. WAIT FOR GREEN //' },
     aim: { title: 'Target', bestType: 'time', instruction: '// HIT THE FLOATING TARGETS //' },
     sequence: { title: 'Echo', bestType: 'level', instruction: '// REPEAT THE LIGHT PATTERN //' },
     matrix: { title: 'Code', bestType: 'time', instruction: '// DECODE NUMBERS IN ORDER //' },
@@ -118,24 +118,54 @@
     if (state.haptic && navigator.vibrate) navigator.vibrate(pattern);
   }
 
-  function beep(type = 'tap') {
-    if (!state.sound) return;
+  function ensureAudio() {
+    if (!state.sound) return null;
     try {
       audioCtx ||= new (window.AudioContext || window.webkitAudioContext)();
-      const now = audioCtx.currentTime;
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      const freqs = { tap: 520, good: 780, bad: 170, finish: 980, tick: 360, go: 680 };
-      osc.type = type === 'bad' ? 'sawtooth' : 'sine';
-      osc.frequency.setValueAtTime(freqs[type] || 520, now);
-      if (type === 'finish') osc.frequency.exponentialRampToValueAtTime(1320, now + .12);
-      gain.gain.setValueAtTime(.0001, now);
-      gain.gain.exponentialRampToValueAtTime(.09, now + .012);
-      gain.gain.exponentialRampToValueAtTime(.0001, now + (type === 'finish' ? .22 : .08));
-      osc.connect(gain).connect(audioCtx.destination);
-      osc.start(now);
-      osc.stop(now + (type === 'finish' ? .24 : .1));
-    } catch {}
+      if (audioCtx.state === 'suspended') audioCtx.resume().catch(() => {});
+      return audioCtx;
+    } catch {
+      return null;
+    }
+  }
+
+  function tone(freq, duration = 0.08, opts = {}) {
+    const ctx = ensureAudio();
+    if (!ctx) return;
+    const now = ctx.currentTime + (opts.delay || 0);
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    const filter = ctx.createBiquadFilter();
+    osc.type = opts.type || 'sine';
+    filter.type = opts.filterType || 'lowpass';
+    filter.frequency.setValueAtTime(opts.filter || 2600, now);
+    filter.Q.setValueAtTime(opts.q || 0.6, now);
+    osc.frequency.setValueAtTime(freq, now);
+    if (opts.to) osc.frequency.exponentialRampToValueAtTime(opts.to, now + duration * 0.72);
+    gain.gain.setValueAtTime(0.0001, now);
+    gain.gain.exponentialRampToValueAtTime(opts.volume || 0.075, now + 0.012);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+    osc.connect(filter).connect(gain).connect(ctx.destination);
+    osc.start(now);
+    osc.stop(now + duration + 0.02);
+  }
+
+  function beep(type = 'tap') {
+    if (!state.sound) return;
+    if (type === 'bad') return tone(155, .18, { type: 'sawtooth', to: 92, volume: .07, filter: 1300 });
+    if (type === 'finish') {
+      tone(640, .10, { volume: .075 });
+      tone(940, .14, { delay: .08, to: 1250, volume: .085 });
+      return;
+    }
+    if (type === 'tick') return tone(440, .075, { type: 'square', volume: .045, filter: 1700 });
+    if (type === 'f1') return tone(310, .115, { type: 'square', to: 350, volume: .065, filter: 900, q: 1.2 });
+    if (type === 'go') {
+      tone(620, .12, { type: 'triangle', volume: .085, filter: 2400 });
+      tone(980, .22, { delay: .045, type: 'sine', to: 1480, volume: .075, filter: 3400 });
+      return;
+    }
+    tone(540, .055, { type: 'triangle', volume: .052, filter: 2400 });
   }
 
   function showToast(msg) {
@@ -357,8 +387,8 @@
       els.lights.appendChild(pillar);
     }
     els.raceButton.classList.remove('ready');
-    els.raceInstruction.textContent = '// TAP TO CHARGE THE SIGNAL //';
-    els.instruction.textContent = '// GREEN ONLY. EARLY TAP = MISFIRE //';
+    els.raceInstruction.textContent = '// TAP TO ARM THE LIGHTS //';
+    els.instruction.textContent = '// WAIT FOR GREEN. EARLY TAP = MISFIRE //';
     game = { phase: 'idle', timeout: 0, goAt: 0, falseStarts: 0 };
   }
 
@@ -381,7 +411,7 @@
       els.raceButton.classList.remove('ready');
       els.mainTime.textContent = 'FALSE';
       els.progressValue.textContent = 'START';
-      els.raceInstruction.textContent = '// MISFIRE. TAP TO RECHARGE //';
+      els.raceInstruction.textContent = '// FALSE START. TAP TO ARM AGAIN //';
       beep('bad'); vibrate([45, 40, 45]);
       updateStats({ accuracy: 0 });
       return;
@@ -391,7 +421,7 @@
       game.phase = 'done';
       els.mainTime.textContent = fmt(reaction);
       els.progressValue.textContent = 'GO';
-      els.raceInstruction.textContent = '// SIGNAL LOCKED. TAP TO RESTART //';
+      els.raceInstruction.textContent = '// REACTION SAVED. TAP TO RESTART //';
       recordResult(reaction, { falseStarts: game.falseStarts });
     }
   }
@@ -404,12 +434,12 @@
     els.raceButton.classList.remove('ready');
     els.mainTime.textContent = '0.000';
     els.progressValue.textContent = 'WAIT';
-    els.raceInstruction.textContent = '// SYNCING... //';
-    beep('tick'); vibrate(10);
+    els.raceInstruction.textContent = '// LIGHTS ON //';
+    beep('f1'); vibrate(10);
     for (let i = 0; i < 4; i++) {
       game.timeouts.push(setTimeout(() => {
         lightPillar(i, 'red');
-        beep('tick'); vibrate(8);
+        beep('f1'); vibrate(8);
       }, 450 * (i + 1)));
     }
     const [min, max] = getLevel().raceDelay;
@@ -420,8 +450,9 @@
         game.phase = 'go';
         game.goAt = performance.now();
         setBulbs('green');
+        $$('.light-pillar', els.lights).forEach(p => p.classList.add('is-lit'));
         els.raceButton.classList.add('ready');
-        els.raceInstruction.textContent = '// GO! //';
+        els.raceInstruction.textContent = '// GO //';
         els.progressValue.textContent = 'TAP';
         beep('go'); vibrate(20);
       }, randomDelay);
@@ -430,10 +461,13 @@
 
   function lightPillar(index, color) {
     const pillars = $$('.light-pillar', els.lights);
+    if (!pillars[index]) return;
+    pillars[index].classList.add('is-lit');
     $$('.bulb', pillars[index]).forEach(b => b.classList.add(color));
   }
 
   function setBulbs(mode) {
+    $$('.light-pillar', els.lights).forEach(p => p.classList.remove('is-lit'));
     $$('.bulb', els.lights).forEach(b => {
       b.classList.remove('red', 'green');
       if (mode === 'green') b.classList.add('green');
@@ -528,7 +562,7 @@
     for (const idx of game.sequence) {
       const tile = $$('.seq-tile', els.sequenceGrid)[idx];
       tile.classList.add('active');
-      beep('tick'); vibrate(8);
+      beep('f1'); vibrate(8);
       await wait(state.reduceMotion ? 120 : 360);
       tile.classList.remove('active');
       await wait(state.reduceMotion ? 60 : 145);
@@ -748,7 +782,7 @@
     window.addEventListener('beforeinstallprompt', e => {
       e.preventDefault();
       deferredInstallPrompt = e;
-      els.installBtn.textContent = '＋ Установить';
+      els.installBtn.textContent = '+ Установить';
     });
 
     document.addEventListener('visibilitychange', () => {

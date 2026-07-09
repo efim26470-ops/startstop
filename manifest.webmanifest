@@ -1,7 +1,7 @@
 {
-  "name": "NeuroTap v5 — Reaction Trainer",
+  "name": "NeuroTap v6 — Reaction Trainer",
   "short_name": "NeuroTap",
-  "description": "PWA-тренажёр реакции и внимания: Grid, Launch, Target, Echo, Code и Focus. Работает локально и хранит рекорды на устройстве.",
+  "description": "PWA-тренажёр реакции и внимания: Grid, Pulse, Target, Echo, Code и Focus. Работает локально и хранит рекорды на устройстве.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",

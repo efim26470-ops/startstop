@@ -1,9 +1,9 @@
-const CACHE_NAME = 'neurotap-v5.0.0';
+const CACHE_NAME = 'neurotap-v6.0.0';
 const ASSETS = [
   './',
   './index.html',
-  './styles.css?v=5.0',
-  './app.js?v=5.0',
+  './styles.css?v=6.0',
+  './app.js?v=6.0',
   './manifest.webmanifest',
   './assets/icon-192.png',
   './assets/icon-512.png',
