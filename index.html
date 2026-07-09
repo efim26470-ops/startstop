@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#090909" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="ReflexLab" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="format-detection" content="telephone=no" />
+  <title>ReflexLab — тренажёр реакции</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
+  <link rel="icon" href="assets/icon-192.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+  <main class="app-shell" id="appShell">
+    <header class="topbar">
+      <div class="profile-chip" aria-label="Профиль">
+        <span class="medal">◉</span>
+        <span id="globalRank">#00001</span>
+      </div>
+      <button class="premium-pill" id="dailyBtn" type="button" aria-label="Ежедневный челлендж">
+        <span>⚡</span><strong>Daily</strong>
+      </button>
+      <div class="top-actions">
+        <button class="icon-btn" id="helpBtn" type="button" aria-label="Помощь">?</button>
+        <button class="icon-btn" id="settingsBtn" type="button" aria-label="Настройки">⚙</button>
+      </div>
+    </header>
+
+    <section class="hero-card" id="scoreCard" aria-live="polite">
+      <div class="main-time" id="mainTime">0.000</div>
+      <div class="score-row">
+        <div>
+          <div class="mini-value" id="bestValue">--</div>
+          <div class="mini-label">Best Time</div>
+        </div>
+        <div class="progress-value" id="progressValue">0/10</div>
+      </div>
+    </section>
+
+    <nav class="mode-strip" aria-label="Режимы тренировки">
+      <button class="mode-tab is-active" data-mode="tiles" type="button">Tiles</button>
+      <button class="mode-tab" data-mode="race" type="button">Race</button>
+      <button class="mode-tab" data-mode="aim" type="button">Aim</button>
+      <button class="mode-tab" data-mode="sequence" type="button">Memory</button>
+      <button class="mode-tab" data-mode="matrix" type="button">Matrix</button>
+      <button class="mode-tab" data-mode="stroop" type="button">Color</button>
+    </nav>
+
+    <section class="level-card compact">
+      <div class="segmented" id="levelButtons" aria-label="Сложность">
+        <button class="seg-btn is-active" data-level="easy" type="button">Easy</button>
+        <button class="seg-btn" data-level="normal" type="button">Normal</button>
+        <button class="seg-btn" data-level="hard" type="button">Hard</button>
+      </div>
+    </section>
+
+    <section class="game-zone" id="gameZone">
+      <div class="tiles-grid" id="tilesGrid" aria-label="Сетка реакции"></div>
+      <div class="race-zone hidden" id="raceZone">
+        <div class="lights" id="lights"></div>
+        <p class="instruction" id="raceInstruction">// TAP WHEN YOU ARE READY TO RACE //</p>
+        <button class="race-button" id="raceButton" type="button" aria-label="Старт">
+          <span class="race-ring"></span>
+          <span class="play-icon">▶</span>
+        </button>
+      </div>
+      <div class="aim-zone hidden" id="aimZone">
+        <div class="aim-target" id="aimTarget" role="button" tabindex="0" aria-label="Цель"></div>
+      </div>
+      <div class="sequence-zone hidden" id="sequenceZone">
+        <div class="sequence-grid" id="sequenceGrid" aria-label="Сетка памяти"></div>
+        <button class="glass-action" id="sequenceStart" type="button">Show sequence</button>
+      </div>
+      <div class="matrix-zone hidden" id="matrixZone">
+        <div class="matrix-grid" id="matrixGrid" aria-label="Матрица внимания"></div>
+      </div>
+      <div class="stroop-zone hidden" id="stroopZone">
+        <div class="stroop-word" id="stroopWord">RED</div>
+        <div class="stroop-options" id="stroopOptions"></div>
+      </div>
+    </section>
+
+    <p class="instruction" id="instruction">// TAP ON THE COLORED TILE TO START //</p>
+
+    <section class="stats-card">
+      <div class="stat">
+        <strong id="avgStat">--</strong>
+        <span>Avg</span>
+      </div>
+      <div class="stat">
+        <strong id="accuracyStat">100%</strong>
+        <span>Accuracy</span>
+      </div>
+      <div class="stat">
+        <strong id="sessionStat">0</strong>
+        <span>Runs</span>
+      </div>
+    </section>
+
+    <footer class="footerbar">
+      <div class="brand"><span>re</span><b>flex</b><i>⚡</i><small>lab</small></div>
+      <button class="level-pill" id="installBtn" type="button">＋ На экран</button>
+      <button class="gamepad" id="randomModeBtn" type="button" aria-label="Случайный режим">🎮</button>
+    </footer>
+  </main>
+
+  <aside class="drawer" id="settingsDrawer" aria-hidden="true">
+    <div class="drawer-panel">
+      <div class="drawer-head">
+        <h2>Настройки</h2>
+        <button class="icon-btn" id="closeSettings" type="button">×</button>
+      </div>
+      <div class="setting-group">
+        <h3>Тема</h3>
+        <div class="theme-grid" id="themeGrid"></div>
+      </div>
+      <div class="setting-group">
+        <h3>Геймплей</h3>
+        <label class="switch-row"><span>Звук</span><input id="soundToggle" type="checkbox" checked><i></i></label>
+        <label class="switch-row"><span>Вибрация</span><input id="hapticToggle" type="checkbox" checked><i></i></label>
+        <label class="switch-row"><span>Reduce motion</span><input id="motionToggle" type="checkbox"><i></i></label>
+      </div>
+      <div class="setting-group">
+        <h3>Данные</h3>
+        <button class="danger-btn" id="resetBtn" type="button">Сбросить рекорды</button>
+      </div>
+    </div>
+  </aside>
+
+  <aside class="drawer" id="helpDrawer" aria-hidden="true">
+    <div class="drawer-panel">
+      <div class="drawer-head">
+        <h2>Режимы</h2>
+        <button class="icon-btn" id="closeHelp" type="button">×</button>
+      </div>
+      <div class="help-list">
+        <article><b>Tiles</b><span>нажимай красную плитку, пока не закроешь серию.</span></article>
+        <article><b>Race</b><span>жди зелёный сигнал. Ранний тап — false start.</span></article>
+        <article><b>Aim</b><span>бей по появляющимся целям, чем выше сложность — тем меньше цель.</span></article>
+        <article><b>Memory</b><span>запоминай последовательность и повторяй её.</span></article>
+        <article><b>Matrix</b><span>тапай числа по порядку: 1, 2, 3…</span></article>
+        <article><b>Color</b><span>тапай цвет текста, а не значение слова.</span></article>
+      </div>
+      <p class="ios-note">Для iPhone: открой сайт в Safari → «Поделиться» → «На экран Домой».</p>
+    </div>
+  </aside>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="app.js" defer></script>
+</body>
+</html>
