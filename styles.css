@@ -794,3 +794,161 @@ body[data-mode="race"] .hero-card[data-progress-state="ready"] .progress-value {
   body[data-mode="race"] .hero-card[data-progress-state="start"] .progress-value,
   body[data-mode="race"] .hero-card[data-progress-state="ready"] .progress-value { font-size: clamp(12px, 3.5vw, 15px); }
 }
+
+
+/* v11: hard layout fix for iPhone screenshots */
+:root { --footer-h: 54px; }
+body { overflow-y: auto; }
+body.standalone-mode { overflow-y: auto; }
+.app-shell {
+  min-height: auto;
+  padding-bottom: calc(var(--footer-h) + 28px + max(10px, var(--safe-bottom))) !important;
+}
+body.browser-mode .app-shell {
+  padding-bottom: calc(var(--footer-h) + 116px + max(10px, var(--safe-bottom))) !important;
+}
+.footerbar {
+  position: fixed !important;
+  left: 50%;
+  right: auto;
+  bottom: calc(10px + max(8px, var(--safe-bottom)));
+  width: min(calc(100vw - 32px - var(--safe-left) - var(--safe-right)), 398px);
+  min-height: var(--footer-h);
+  transform: translateX(-50%);
+  z-index: 40;
+  padding: 7px 0;
+  align-items: center;
+  pointer-events: none;
+}
+.footerbar > * { pointer-events: auto; }
+.brand {
+  flex: 1 1 120px;
+  max-width: 154px;
+  font-size: clamp(20px, 5vw, 24px);
+  line-height: .96;
+}
+.brand small {
+  display: block;
+  margin-top: 4px;
+  font-size: 7px;
+  line-height: 1;
+  white-space: nowrap;
+}
+.level-pill {
+  flex: 0 0 auto;
+  min-height: 38px;
+  max-width: 116px;
+  padding: 0 12px;
+  font-size: 13px;
+  border-radius: 999px;
+}
+.gamepad {
+  flex: 0 0 42px;
+  width: 42px;
+  height: 42px;
+}
+.game-zone {
+  flex: 0 0 auto;
+  overflow: visible;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+body[data-mode="race"] .game-zone { min-height: 356px; }
+body[data-mode="sequence"] .game-zone { min-height: 340px; }
+body[data-mode="tiles"] .game-zone { min-height: 352px; }
+body[data-mode="matrix"] .game-zone { min-height: 330px; }
+body[data-mode="aim"] .game-zone { min-height: 300px; }
+body[data-mode="stroop"] .game-zone { min-height: 340px; }
+.race-zone, .aim-zone, .sequence-zone, .matrix-zone, .stroop-zone {
+  flex: 0 0 auto;
+  justify-content: flex-start;
+}
+body[data-mode="race"] .race-zone { gap: 11px; }
+.lights {
+  width: min(100%, 330px);
+  gap: clamp(10px, 3.4vw, 17px);
+}
+.light-pillar {
+  height: clamp(142px, 18.5svh, 178px);
+  padding: 8px 4px;
+}
+.bulb { width: min(60%, 31px); }
+.race-button {
+  width: clamp(108px, 15.5svh, 136px);
+  max-width: 38vw;
+}
+.sequence-grid { --grid-size: min(244px, 30svh); --cell-gap: 8px; }
+.matrix-grid { --grid-size: min(286px, 34svh); --cell-gap: 7px; }
+.tiles-grid { --grid-size: min(300px, 35svh); --cell-gap: 8px; }
+body[data-level="hard"] .tiles-grid { --grid-size: min(310px, 35svh); --cell-gap: 6px; }
+.glass-action, .danger-btn {
+  min-height: 36px;
+  padding: 0 16px;
+  font-size: 14px;
+}
+.instruction {
+  min-height: 14px;
+  font-size: clamp(10px, 2.65vw, 12px);
+  line-height: 1.15;
+}
+.aim-zone { min-height: 230px; height: 230px; }
+.stroop-word { min-height: 92px; }
+.stroop-btn { min-height: 42px; }
+
+body[data-mode="race"] .hero-card {
+  grid-template-columns: minmax(68px, .66fr) minmax(0, 1fr) minmax(92px, .84fr);
+  min-height: clamp(102px, 14svh, 132px);
+}
+body[data-mode="race"] .score-row > div:last-child {
+  width: 92px;
+  min-width: 92px;
+  max-width: 92px;
+  padding-left: 9px;
+}
+body[data-mode="race"] .main-time { font-size: clamp(38px, 10.8vw, 52px); }
+body[data-mode="race"] .progress-value { font-size: clamp(15px, 4.05vw, 19px); }
+body[data-mode="race"] .hero-card[data-progress-state="go"] .progress-value { font-size: clamp(23px, 6.8vw, 31px); }
+body[data-mode="race"] .hero-card[data-progress-state="tap"] .progress-value,
+body[data-mode="race"] .hero-card[data-progress-state="wait"] .progress-value,
+body[data-mode="race"] .hero-card[data-progress-state="start"] .progress-value,
+body[data-mode="race"] .hero-card[data-progress-state="ready"] .progress-value {
+  font-size: clamp(13px, 3.65vw, 16px);
+}
+
+@media (max-height: 760px) {
+  :root { --gap: 6px; --footer-h: 48px; }
+  .app-shell { padding-top: calc(10px + max(var(--safe-top), var(--ios-top-offset))) !important; }
+  .topbar { min-height: 39px; }
+  .hero-card { min-height: 96px; padding-top: 11px; padding-bottom: 10px; }
+  .mode-tab { min-height: 38px; }
+  .segmented { min-height: 39px; }
+  .seg-btn { min-height: 30px; }
+  body[data-mode="race"] .game-zone { min-height: 318px; }
+  body[data-mode="sequence"] .game-zone { min-height: 306px; }
+  body[data-mode="tiles"] .game-zone { min-height: 320px; }
+  .lights { width: min(100%, 300px); gap: 9px; }
+  .light-pillar { height: clamp(124px, 17svh, 150px); }
+  .bulb { width: min(56%, 28px); }
+  .race-button { width: clamp(96px, 14svh, 122px); }
+  .sequence-grid { --grid-size: min(222px, 28svh); --cell-gap: 7px; }
+  .matrix-grid { --grid-size: min(268px, 32svh); --cell-gap: 6px; }
+  .tiles-grid { --grid-size: min(286px, 33svh); --cell-gap: 7px; }
+  .footerbar { bottom: calc(8px + max(6px, var(--safe-bottom))); }
+  .brand { font-size: 18px; max-width: 138px; }
+  .brand small { display: none; }
+  .level-pill { min-height: 34px; max-width: 104px; font-size: 12px; }
+  .gamepad { width: 38px; height: 38px; flex-basis: 38px; }
+}
+
+@media (max-width: 370px) {
+  .footerbar { width: min(calc(100vw - 24px - var(--safe-left) - var(--safe-right)), 398px); }
+  .brand { max-width: 112px; font-size: 17px; }
+  .level-pill { max-width: 98px; padding: 0 9px; }
+  .gamepad { width: 36px; height: 36px; flex-basis: 36px; }
+  body[data-mode="race"] .score-row > div:last-child { width: 76px; min-width: 76px; max-width: 76px; }
+  body[data-mode="race"] .progress-value { font-size: 13px; }
+  body[data-mode="race"] .hero-card[data-progress-state="ready"] .progress-value,
+  body[data-mode="race"] .hero-card[data-progress-state="wait"] .progress-value,
+  body[data-mode="race"] .hero-card[data-progress-state="tap"] .progress-value,
+  body[data-mode="race"] .hero-card[data-progress-state="start"] .progress-value { font-size: 12px; }
+}
