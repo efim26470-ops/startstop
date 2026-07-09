@@ -1,8 +1,8 @@
 {
-  "name": "NeuroTap v8",
+  "name": "NeuroTap v9",
   "short_name": "NeuroTap",
   "description": "PWA-тренажёр реакции и внимания: Grid, Pulse, Target, Echo, Code и Focus. Работает локально и хранит рекорды на устройстве.",
-  "start_url": "./index.html?v=8.0",
+  "start_url": "./index.html?v=9.0",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
@@ -22,5 +22,5 @@
       "purpose": "any maskable"
     }
   ],
-  "id": "./neurotap-v8"
+  "id": "./neurotap-v9"
 }

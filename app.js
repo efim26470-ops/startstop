@@ -420,7 +420,7 @@
       setBulbs('off');
       els.raceButton.classList.remove('ready');
       els.mainTime.textContent = 'FALSE';
-      els.progressValue.textContent = 'START';
+      els.progressValue.textContent = 'START'; syncProgressState();
       els.raceInstruction.textContent = '// FALSE START. TAP TO ARM AGAIN //';
       beep('bad'); vibrate([45, 40, 45]);
       updateStats({ accuracy: 0 });
@@ -430,7 +430,7 @@
       const reaction = (performance.now() - game.goAt) / 1000;
       game.phase = 'done';
       els.mainTime.textContent = fmt(reaction);
-      els.progressValue.textContent = 'GO';
+      els.progressValue.textContent = 'GO'; syncProgressState();
       els.raceInstruction.textContent = '// REACTION SAVED. TAP TO RESTART //';
       recordResult(reaction, { falseStarts: game.falseStarts });
     }
@@ -443,7 +443,7 @@
     setBulbs('off');
     els.raceButton.classList.remove('ready');
     els.mainTime.textContent = '0.000';
-    els.progressValue.textContent = 'WAIT';
+    els.progressValue.textContent = 'WAIT'; syncProgressState();
     els.raceInstruction.textContent = '// LIGHTS ON //';
     beep('f1'); vibrate(10);
     for (let i = 0; i < 4; i++) {
@@ -463,7 +463,7 @@
         $$('.light-pillar', els.lights).forEach(p => p.classList.add('is-lit'));
         els.raceButton.classList.add('ready');
         els.raceInstruction.textContent = '// GO //';
-        els.progressValue.textContent = 'TAP';
+        els.progressValue.textContent = 'TAP'; syncProgressState();
         beep('go'); vibrate(20);
       }, randomDelay);
     }, 2300));
@@ -860,6 +860,8 @@
     els.modeTabs.forEach(b => b.classList.toggle('is-active', b.dataset.mode === state.mode));
     syncLayoutState();
     resetMode();
+    syncProgressState();
+    new MutationObserver(syncProgressState).observe(els.progressValue, { childList: true, characterData: true, subtree: true });
 
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
