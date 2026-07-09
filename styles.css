@@ -952,3 +952,170 @@ body[data-mode="race"] .hero-card[data-progress-state="ready"] .progress-value {
   body[data-mode="race"] .hero-card[data-progress-state="tap"] .progress-value,
   body[data-mode="race"] .hero-card[data-progress-state="start"] .progress-value { font-size: 12px; }
 }
+
+
+/* v12: final overlap + clipped score fix */
+:root { --footer-h: 0px; }
+body,
+body.standalone-mode,
+body.browser-mode {
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+}
+.app-shell,
+body.browser-mode .app-shell {
+  min-height: calc(var(--vvh) * 100) !important;
+  padding-bottom: calc(18px + max(12px, var(--safe-bottom))) !important;
+}
+.footerbar {
+  position: static !important;
+  left: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  width: 100% !important;
+  min-height: 48px !important;
+  transform: none !important;
+  z-index: 1 !important;
+  padding: 0 !important;
+  pointer-events: auto !important;
+  margin-top: 2px !important;
+}
+.footerbar > * { pointer-events: auto !important; }
+.brand { max-width: 150px !important; }
+.level-pill { max-width: 112px !important; }
+.gamepad { flex: 0 0 40px !important; width: 40px !important; height: 40px !important; }
+
+.hero-card {
+  grid-template-columns: minmax(78px, .78fr) minmax(0, 1.18fr) minmax(82px, .78fr) !important;
+  gap: 6px !important;
+  padding-left: clamp(14px, 3.8vw, 20px) !important;
+  padding-right: clamp(14px, 3.8vw, 20px) !important;
+}
+.main-time {
+  font-size: clamp(42px, 11vw, 58px) !important;
+  letter-spacing: -.07em !important;
+}
+.score-row > div:first-child {
+  overflow: hidden !important;
+  max-width: 86px !important;
+}
+.score-row > div:last-child {
+  width: 82px !important;
+  min-width: 82px !important;
+  max-width: 82px !important;
+  padding-left: 8px !important;
+  overflow: hidden !important;
+  justify-self: end !important;
+}
+.mini-value {
+  max-width: 100% !important;
+  overflow: hidden !important;
+  text-overflow: clip !important;
+  white-space: nowrap !important;
+  font-size: clamp(18px, 5.6vw, 25px) !important;
+}
+.progress-value {
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+  text-overflow: clip !important;
+  white-space: nowrap !important;
+  text-align: right !important;
+  font-size: clamp(22px, 6.2vw, 30px) !important;
+  letter-spacing: -.035em !important;
+}
+body[data-mode="stroop"] .main-time,
+body[data-mode="matrix"] .main-time,
+body[data-mode="tiles"] .main-time,
+body[data-mode="aim"] .main-time {
+  font-size: clamp(39px, 10.5vw, 54px) !important;
+}
+body[data-mode="stroop"] .score-row > div:last-child,
+body[data-mode="matrix"] .score-row > div:last-child,
+body[data-mode="tiles"] .score-row > div:last-child,
+body[data-mode="aim"] .score-row > div:last-child,
+body[data-mode="sequence"] .score-row > div:last-child {
+  width: 76px !important;
+  min-width: 76px !important;
+  max-width: 76px !important;
+}
+body[data-mode="stroop"] .progress-value,
+body[data-mode="matrix"] .progress-value,
+body[data-mode="tiles"] .progress-value,
+body[data-mode="aim"] .progress-value,
+body[data-mode="sequence"] .progress-value {
+  font-size: clamp(21px, 6vw, 28px) !important;
+}
+body[data-mode="race"] .hero-card {
+  grid-template-columns: minmax(66px, .66fr) minmax(0, 1.02fr) minmax(86px, .82fr) !important;
+}
+body[data-mode="race"] .score-row > div:last-child {
+  width: 86px !important; min-width: 86px !important; max-width: 86px !important;
+}
+body[data-mode="race"] .progress-value { font-size: clamp(14px, 3.9vw, 18px) !important; }
+body[data-mode="race"] .hero-card[data-progress-state="go"] .progress-value { font-size: clamp(22px, 6.3vw, 30px) !important; }
+body[data-mode="race"] .hero-card[data-progress-state="ready"] .progress-value,
+body[data-mode="race"] .hero-card[data-progress-state="wait"] .progress-value,
+body[data-mode="race"] .hero-card[data-progress-state="tap"] .progress-value,
+body[data-mode="race"] .hero-card[data-progress-state="start"] .progress-value { font-size: clamp(12px, 3.25vw, 15px) !important; }
+
+.game-zone {
+  flex: 0 0 auto !important;
+  overflow: visible !important;
+  min-height: auto !important;
+  padding-top: 2px !important;
+  padding-bottom: 2px !important;
+}
+body[data-mode="race"] .game-zone,
+body[data-mode="sequence"] .game-zone,
+body[data-mode="tiles"] .game-zone,
+body[data-mode="matrix"] .game-zone,
+body[data-mode="aim"] .game-zone,
+body[data-mode="stroop"] .game-zone {
+  min-height: auto !important;
+}
+.race-zone, .aim-zone, .sequence-zone, .matrix-zone, .stroop-zone { flex: 0 0 auto !important; }
+.stroop-word { min-height: 86px !important; font-size: clamp(32px, 9.5vw, 49px) !important; }
+.stroop-options { gap: 8px !important; }
+.stroop-btn { min-height: 40px !important; font-size: 13px !important; }
+.sequence-grid { --grid-size: min(232px, 28svh) !important; --cell-gap: 7px !important; }
+.matrix-grid { --grid-size: min(278px, 32svh) !important; --cell-gap: 6px !important; }
+.tiles-grid { --grid-size: min(292px, 33svh) !important; }
+body[data-level="hard"] .tiles-grid { --grid-size: min(298px, 33svh) !important; }
+.lights { width: min(100%, 302px) !important; gap: 9px !important; }
+.light-pillar { height: clamp(126px, 17svh, 152px) !important; }
+.race-button { width: clamp(96px, 13.8svh, 120px) !important; }
+.aim-zone { height: 218px !important; min-height: 218px !important; }
+.instruction { margin-top: 2px !important; margin-bottom: 2px !important; }
+
+@media (max-width: 370px), (max-height: 735px) {
+  :root { --gap: 5px !important; }
+  .app-shell { padding-bottom: calc(14px + max(10px, var(--safe-bottom))) !important; }
+  .hero-card {
+    min-height: 92px !important;
+    grid-template-columns: minmax(58px, .62fr) minmax(0, .96fr) minmax(70px, .72fr) !important;
+    padding-left: 11px !important;
+    padding-right: 11px !important;
+  }
+  .main-time { font-size: clamp(33px, 9.6vw, 44px) !important; }
+  .mini-value { font-size: clamp(16px, 4.9vw, 22px) !important; }
+  .progress-value { font-size: clamp(18px, 5.3vw, 24px) !important; }
+  .score-row > div:first-child { max-width: 66px !important; }
+  .score-row > div:last-child { width: 70px !important; min-width: 70px !important; max-width: 70px !important; }
+  body[data-mode="race"] .score-row > div:last-child { width: 70px !important; min-width: 70px !important; max-width: 70px !important; }
+  body[data-mode="race"] .progress-value { font-size: 12px !important; }
+  body[data-mode="race"] .hero-card[data-progress-state="go"] .progress-value { font-size: clamp(19px, 5.7vw, 25px) !important; }
+  .mode-tab { min-height: 36px !important; }
+  .segmented { min-height: 37px !important; }
+  .seg-btn { min-height: 28px !important; }
+  .stroop-word { min-height: 78px !important; font-size: clamp(29px, 8.8vw, 43px) !important; }
+  .stroop-btn { min-height: 37px !important; }
+  .sequence-grid { --grid-size: min(216px, 27svh) !important; }
+  .lights { width: min(100%, 286px) !important; gap: 8px !important; }
+  .light-pillar { height: clamp(118px, 16svh, 142px) !important; }
+  .race-button { width: clamp(88px, 12.8svh, 112px) !important; }
+  .brand { max-width: 122px !important; font-size: 17px !important; }
+  .brand small { display: none !important; }
+  .level-pill { max-width: 100px !important; min-height: 34px !important; font-size: 12px !important; }
+  .gamepad { width: 36px !important; height: 36px !important; flex-basis: 36px !important; }
+}

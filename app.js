@@ -1,7 +1,7 @@
 (() => {
   'use strict';
 
-  const STORAGE_KEY = 'neurotap.v11';
+  const STORAGE_KEY = 'neurotap.v12';
   const $ = (sel, root = document) => root.querySelector(sel);
   const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
 
@@ -250,6 +250,7 @@
     const rank = Math.max(1, 20000 - state.globalRuns * 7 - Object.keys(state.bests).length * 13);
     els.globalRank.textContent = `R-${String(rank).padStart(4, '0')}`;
     if (progressText !== null) els.progressValue.textContent = progressText;
+    syncProgressState();
   }
 
   function updateStats(meta = {}) {
