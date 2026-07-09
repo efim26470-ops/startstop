@@ -54,6 +54,7 @@
 
   const els = {
     body: document.body,
+    appShell: $('#appShell'),
     mainTime: $('#mainTime'),
     bestValue: $('#bestValue'),
     progressValue: $('#progressValue'),
@@ -220,8 +221,18 @@
     saveState();
   }
 
+  function syncLayoutState() {
+    document.body.dataset.mode = state.mode;
+    document.body.dataset.level = state.level;
+    if (els.appShell) {
+      els.appShell.dataset.mode = state.mode;
+      els.appShell.dataset.level = state.level;
+    }
+  }
+
   function setLevel(level) {
     state.level = levels[level] ? level : 'easy';
+    syncLayoutState();
     els.levelButtons.forEach(b => b.classList.toggle('is-active', b.dataset.level === state.level));
     saveState();
     resetMode();
@@ -229,6 +240,7 @@
 
   function setMode(mode) {
     state.mode = modeInfo[mode] ? mode : 'tiles';
+    syncLayoutState();
     els.modeTabs.forEach(b => b.classList.toggle('is-active', b.dataset.mode === state.mode));
     saveState();
     resetMode();
@@ -242,6 +254,7 @@
     stopTimer();
     elapsed = 0;
     game = null;
+    syncLayoutState();
     els.mainTime.textContent = modeInfo[state.mode].bestType === 'level' ? '0' : '0.000';
     els.instruction.textContent = modeInfo[state.mode].instruction;
     updateStats({ accuracy: 100 });
@@ -773,6 +786,7 @@
     setTheme(state.theme);
     els.levelButtons.forEach(b => b.classList.toggle('is-active', b.dataset.level === state.level));
     els.modeTabs.forEach(b => b.classList.toggle('is-active', b.dataset.mode === state.mode));
+    syncLayoutState();
     resetMode();
 
     if ('serviceWorker' in navigator) {

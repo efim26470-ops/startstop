@@ -25,3 +25,12 @@ Reflex Dark, Soft Light, Neon Pulse, Ember, Ocean, Sakura, Matrix.
 ## iPhone / PWA
 
 Открой сайт через Safari → Поделиться → На экран Домой. Иконки и manifest уже добавлены.
+
+## v2 mobile visual fix
+
+- One-screen iPhone layout: body scrolling disabled on mobile, game is fitted into the visible viewport.
+- Race mode reworked for compact vertical layout: lights, status text, and start button no longer overlap.
+- All six modes fit in one row on narrow screens.
+- HUD and timer card are reduced on iPhone Safari/PWA to avoid clipping.
+- Bottom instruction is hidden in Race mode on mobile to remove duplicate text and save height.
+- Theme styling stays enabled; records and PWA installation remain unchanged.
