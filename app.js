@@ -1,7 +1,7 @@
 (() => {
   'use strict';
 
-  const STORAGE_KEY = 'neurotap.v7';
+  const STORAGE_KEY = 'neurotap.v10';
   const $ = (sel, root = document) => root.querySelector(sel);
   const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
 
@@ -198,6 +198,20 @@
     els.scoreCard.classList.remove('pulse');
     void els.scoreCard.offsetWidth;
     els.scoreCard.classList.add('pulse');
+  }
+
+
+  function syncProgressState() {
+    if (!els.scoreCard || !els.progressValue) return;
+    const raw = (els.progressValue.textContent || '').trim().toLowerCase();
+    let stateName = 'counter';
+    if (raw.includes('go')) stateName = 'go';
+    else if (raw.includes('ready')) stateName = 'ready';
+    else if (raw.includes('wait')) stateName = 'wait';
+    else if (raw.includes('tap')) stateName = 'tap';
+    else if (raw.includes('start')) stateName = 'start';
+    else if (raw.includes('false')) stateName = 'false';
+    els.scoreCard.dataset.progressState = stateName;
   }
 
   function recordResult(value, meta = {}) {
